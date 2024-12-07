@@ -44,7 +44,7 @@
       left: 0px;
       position: fixed;
     }
-    #run, #clear, #findButton, #paste, #format-button, #uploadButton, #saveButton, #insert, #open-popup, #copy, #open-directory {
+    #run, #clear, #findButton, #paste, #format-button, #uploadButton, #saveButton, #insert, #open-popup, #copy, #open-directory, #fullscreen-btn {
       background: #0c0c0c;
       border: none;
       border-top: none;
@@ -134,8 +134,6 @@
   border-left: 1px solid #cccccc40;
   border-top: 1px solid #cccccc40;
 }
-
-  
 
     /* upload system */
 
@@ -245,6 +243,7 @@ textarea{
     <button id="uploadButton">Upload File</button>
     <button id="saveButton">Download</button>
     <button id="open-popup">Directory</button>
+    <button id="fullscreen-btn">Fullscreen</button>
     
   </div>
   <script>
@@ -401,6 +400,7 @@ function handleFileSelect(evt) {
 
  // Save editor content as a file
  document.getElementById('saveButton').addEventListener('click', () => {
+  const fileName = prompt("Enter the file name:", "My-App.html");
     const editor = monaco.editor.getModels()[0]; // Get the editor instance
     const editorContent = editor.getValue(); // Get editor content
 
@@ -410,7 +410,7 @@ function handleFileSelect(evt) {
     // Create a temporary link element
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'code.html'; // Default file name
+    a.download = fileName; // Default file name
     a.style.display = 'none';
 
     // Append link to the body, trigger the download, then remove the link
@@ -436,6 +436,7 @@ window.addEventListener('beforeunload', (event) => {
   <script src="app.js"></script>
   <script src="window.js"></script>
   <script src="on-load.js"></script>
+  <script src="full-screen.js"></script>
   
 </body>
 </html>
