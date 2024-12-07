@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Editor</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/standalone.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/parser-html.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs/loader.min.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="css/popup.css">
+  <link rel="stylesheet" type="text/css" href="css/window.css">
+  <link rel="stylesheet" type="text/css" href="css/on-load.css">
+
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: #0c0c0c;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Makes sidebar and editor align side by side */
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 15vw;
+  color: #e8e8e8;
+}
+
+
+    h1 {
+      color: #dcdcdc;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #buttons {
+      text-align: center;
+      right: 0px;
+      position: fixed;
+    }
+    #left-buttons {
+      text-align: center;
+      left: 0px;
+      position: fixed;
+    }
+    #run, #clear, #findButton, #paste, #format-button, #uploadButton, #saveButton, #insert, #open-popup, #copy, #open-directory {
+      background: #0c0c0c;
+      border: none;
+      border-top: none;
+      border-bottom: none;
+      height: 3vh;
+      width: 5vw;
+      cursor: pointer;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+     #back {
+      background: #0c0c0c;
+      border: none;
+      border-top: none;
+      border-bottom: none;
+      height: 3vh;
+      width: 15vw;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    #open-directory:hover {
+      background-color: #005a9e;
+    }
+
+    #back:hover {
+      background-color: #005a9e;
+    }
+
+    #run {
+      background: #8d2d2d;
+      border: none;
+      border-top: none;
+      border-bottom: none;
+      height: 3vh;
+      width: 5vw;
+      cursor: pointer;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    #run:hover {
+      background-color: #005a9e;
+    }
+    #clear:hover {
+      background-color: #005a9e;
+    }
+    #findButton:hover {
+      background-color: #005a9e;
+    }
+    #paste:hover {
+      background-color: #005a9e;
+    }
+    #format-button:hover {
+      background-color: #005a9e;
+    }
+    #uploadButton:hover {
+      background-color: #005a9e;
+    }
+    #saveButton:hover {
+      background-color: #005a9e;
+    }
+    #insert:hover {
+      background-color: #005a9e;
+    }
+    #open-popup:hover {
+      background-color: #005a9e;
+    }
+    .footer {
+      position: fixed;
+      height: 3vh;
+      width: 100%;
+      bottom: 0px;
+      border-top: 1px solid #cccccc40;
+      background: #0c0c0c;
+    }
+    #editor {
+ 
+  height: 100vh; /* Full height to match the viewport */
+  width: 100vw; /* Remaining width after sidebar */
+  border: none;
+  background-color: #1e1e1e;
+  transition: margin-left 0.3s, width 0.3s; /* Smooth transition for resizing */
+  border-left: 1px solid #cccccc40;
+  border-top: 1px solid #cccccc40;
+}
+
+  
+
+    /* upload system */
+
+    #fileInput{
+  height: 300px;
+  line-height: 300px;
+  width: 80px;
+  background-color: #cccccc;
+  float: left;
+}
+
+textarea{
+  width: 800px;
+  height: 300px;
+}
+
+
+#file-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 80vh !important; /* Set the maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #c0c0c042 !important; /* Optional: Add a border for clarity */
+    background-color: #0c0c0c; /* Match the sidebar background */
+    color: rgb(231, 231, 231); /* Match the text color */
+}
+
+        #file-list li {
+            padding: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid #c0c0c042;
+        }
+        #file-list li:hover {
+            background-color: #f0f0f0;
+        }
+    
+  </style>
+</head>
+<body>
+
+
+<!-- on page load popup -->
+
+
+<div class="onload" id="onload">
+  <div class="onload-content">
+      <span id="closeonload" class="closeonload">Start</span>
+      <h2>👋 Welcome!</h2>
+      <p>This is a web based, inline code editor built for web development.</p>
+      <p>Build whatever you like using HTML, CSS and JavaScript.</p>
+  </br>
+      <p>Currently, only inline is supported.</p>
+  </div>
+</div>
+
+  
+  <div class="sidebar">
+    <h1 style="font-size: 20px;">Files</h1>
+    
+    <button id="back">Back</button>
+    <ul id="file-list"></ul>
+  </div>
+    <div class="popup" id="popup">
+      <div class="popup-header">
+        <button id="close-popup" style="display: none;">Close Popup</button>
+      <button id="snap-right" style="display: none;">Snap to Right</button> <!-- Snap Right Button -->
+      <button id="snap-left" style="display: none;">Snap to Left</button> <!-- Snap Left Button -->
+      <button id="full-screen" style="display: none;">Full Screen</button> <!-- Full Screen Button -->
+      </div>
+      
+    
+  
+    <ul id="file-list"></ul>
+    <script src="app.js"></script>
+  </div>
+  <div id="editor"></div>
+
+    <!-- editor in popup CHANGE DISPLAY PUPUP TO BLOCK
+  <div class="popup" id="popup">
+    <div class="popup-header">Files
+      <button id="close-popup" style="display: none;">Close Popup</button>
+    <button id="snap-right" style="display: none;">Snap to Right</button> 
+    <button id="snap-left" style="display: none;">Snap to Left</button> 
+    <button id="full-screen" style="display: none;">Full Screen</button> 
+    </div>
+    <div>
+    <div id="editor"></div>
+    </div>
+</div>
+-->
+
+  <div class="footer">
+    <div id="buttons">
+      <button id="insert">Insert</button>
+      <button id="copy">Copy</button>
+      <button id="paste">Paste</button>
+      <button id="clear">Clear</button>
+      <button id="findButton" class="findPopup" onclick="myFunction()">Find <span class="popuptext" id="myPopup">Ctrl + F</span> </button>
+      <button id="format-button">Format</button>
+      <button id="run">Run</button>
+      <input id="fileInput" type="file" accept=".txt" style="display: none;" />
+  </div>
+
+  <div id="left-buttons">
+    <button id="open-directory">Upload folder</button>
+    <button id="uploadButton">Upload File</button>
+    <button id="saveButton">Download</button>
+    <button id="open-popup">Directory</button>
+    
+  </div>
+  <script>
+    // Load Monaco Editor
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      // Create the Monaco Editor instance
+      const editor = monaco.editor.create(document.getElementById('editor'), {
+        value: `👋 Hello!`,
+  
+    
+    
+   
+    
+
+   
+  
+ 
+   
+        
+    
+  
+
+
+
+        language: 'html',
+        theme: 'vs-dark',
+      });
+  
+      // Add event listeners within the scope of the editor
+      document.getElementById('format-button').addEventListener('click', () => {
+        const unformattedCode = editor.getValue();
+        try {
+          const formattedCode = prettier.format(unformattedCode, {
+            parser: 'html',
+            plugins: prettierPlugins,
+          });
+          editor.setValue(formattedCode);
+        } catch (error) {
+          alert('Formatting failed: ' + error.message);
+        }
+      });
+  
+      // Open editor content in a new tab
+      document.getElementById('run').addEventListener('click', () => {
+        const editorContent = editor.getValue();
+  
+        // Open a new tab
+        const newTab = window.open('', '_blank');
+        if (!newTab) {
+          alert('Pop-up blocked! Please allow pop-ups for this site.');
+          return;
+        }
+  
+        // Write the content to the new tab
+        newTab.document.open();
+        newTab.document.write(editorContent);
+        newTab.document.close();
+      });
+  
+      // Paste content from clipboard into the editor
+      document.getElementById('paste').addEventListener('click', async () => {
+        try {
+          const clipboardText = await navigator.clipboard.readText();
+          editor.setValue(clipboardText);
+        } catch (err) {
+          alert('Failed to read clipboard contents: ' + err);
+        }
+      });
+
+      document.getElementById('copy').addEventListener('click', async () => {
+  try {
+    const editorText = editor.getValue(); // Retrieve text from the editor
+    await navigator.clipboard.writeText(editorText); // Write text to clipboard
+    alert('Text copied to clipboard!');
+  } catch (err) {
+    alert('Failed to copy text: ' + err);
+  }
+});
+
+
+      // insert into the editor
+      document.getElementById('insert').addEventListener('click', async () => {
+        try {
+          editor.setValue(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <script>
+
+    <script>
+<body>
+</html>`);
+        } catch (err) {
+          alert('Failed to read clipboard contents: ' + err);
+        }
+      });
+  
+      // Clear the editor content
+      document.getElementById('clear').addEventListener('click', () => {
+        editor.setValue(''); // Clears the editor content
+      });
+    });
+
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.querySelector('.toggle-btn');
+
+        sidebar.classList.toggle('collapsed');
+
+        // Update the toggle button arrow direction
+        if (sidebar.classList.contains('collapsed')) {
+            toggleBtn.innerHTML = '⮟'; // Down arrow when collapsed
+        } else {
+            toggleBtn.innerHTML = '⮝'; // Up arrow when expanded
+        }
+    }
+
+
+    // upload system
+    
+ // Trigger the file input when the button is clicked
+document.getElementById('uploadButton').addEventListener('click', function() {
+  document.getElementById('fileInput').click();  // Trigger the hidden file input
+});
+
+// Handle file selection and load content into Monaco editor
+document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+
+function handleFileSelect(evt) {
+  var files = evt.target.files;
+
+  if (files.length === 0) {
+    return;
+  }
+
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    // Set the content of the Monaco Editor
+    const editor = monaco.editor.getModels()[0];  // Get the first Monaco model (editor instance)
+    editor.setValue(e.target.result);  // Set the content of the Monaco Editor
+  };
+
+  reader.readAsText(files[0]);  // Read the first file as text
+}
+
+ // Save editor content as a file
+ document.getElementById('saveButton').addEventListener('click', () => {
+    const editor = monaco.editor.getModels()[0]; // Get the editor instance
+    const editorContent = editor.getValue(); // Get editor content
+
+    // Create a blob with the editor content
+    const blob = new Blob([editorContent], { type: 'text/html' });
+
+    // Create a temporary link element
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'code.html'; // Default file name
+    a.style.display = 'none';
+
+    // Append link to the body, trigger the download, then remove the link
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+
+  // When the user clicks on div, open the popup
+function myFunction() {
+  var findPopup = document.getElementById("myPopup");
+  findPopup.classList.toggle("show");
+}
+
+// reload confirmation
+window.addEventListener('beforeunload', (event) => {
+    
+    event.preventDefault(); 
+    event.returnValue = '';
+});
+
+  </script>
+  <script src="app.js"></script>
+  <script src="window.js"></script>
+  <script src="on-load.js"></script>
+  
+</body>
+</html>

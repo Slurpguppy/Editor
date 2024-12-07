@@ -1,0 +1,36 @@
+html, body {
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+.popup {
+	z-index: 9;
+	background-color: #5e5e5e;
+	border: 1px solid #1b1b1b6c;
+	
+	min-height: 150px;
+	min-width: 300px;
+	position: absolute;
+	overflow: auto;
+	display: none; /* not working with editor */
+	resize: both;
+	box-sizing: border-box;
+	border-radius: 5px;
+	color: #dfdfdf;
+}
+
+.popup-header {
+	text-align: center;
+	padding: 5px;
+	cursor: move;
+	z-index: 10;
+	background-color: #131313;
+	border-radius: 5px 5px 0px 0px;
+	color: #0c0c0c;
+}
+
+.button-container {
+	margin-bottom: 20px;
+}

@@ -1,0 +1,89 @@
+label { cursor: pointer }
+
+.wrapper {
+  display: flex;
+  height: 100%;
+}
+
+.main {
+  flex: 1;
+  height: 100%;
+  padding: 0 10px;
+  overflow-y: scroll;
+}
+
+.aside {
+  position: relative;
+  min-width: 300px;
+  background: rgba(255, 0, 0, .2);
+}
+
+.aside-inner {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  overflow-y: scroll;
+}
+
+.resize-icon,
+.resizer {
+  top: 50%;
+  height: 12px;
+  margin-left: -7px;
+}
+
+.resize-icon {
+  position: absolute;
+  display: inline-block;
+  padding: 6px;
+  line-height: 12px;
+  color: black;
+  background: white;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  left: -14px;
+  cursor: w-resize;
+  margin-top: 12px;
+}
+
+.aside-inner .resize-icon {
+  position: static;
+  margin: 0;
+}
+
+.resizer {
+  position: relative;
+  height: 28px;
+  width: 100%;
+  background: red;
+  resize: horizontal;
+  overflow: hidden;
+  direction: rtl;
+  cursor: ew-resize;
+  opacity: 0;
+  
+}
+
+::-webkit-resizer {
+  background-color:lime; 
+  width:64px; 
+  height: 64px;
+  border: 2px solid black;
+  box-shadow: 0 0 10px 10px blue;
+  outline: 2px solid yellow;
+
+}
+::-webkit-scrollbar-corner{background-color: yellow;}
+
+#behind-scene-toggle {
+  display: none;
+}
+
+#behind-scene-toggle:checked ~ .wrapper .resizer {
+  opacity: 1;
+}
