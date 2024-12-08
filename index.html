@@ -134,10 +134,21 @@
       border-top: 1px solid #cccccc40;
       background: #0c0c0c;
     }
+
+    .header {
+      position: fixed;
+      height: 3vh;
+      width: 100%;
+      top: 0px;
+      border-bottom: 1px solid #cccccc40;
+      background: #0c0c0c;
+    }
+
     #editor {
  
   height: 100vh; /* Full height to match the viewport */
-  width: 100vw; /* Remaining width after sidebar */
+  width: 100vw;
+  margin-top: 3vh; /* Remaining width after sidebar */
   border: none;
   background-color: #1e1e1e;
   transition: margin-left 0.3s, width 0.3s; /* Smooth transition for resizing */
@@ -200,9 +211,12 @@ textarea{
   </div>
 </div>
 
-  
+  <div class="header">
+    <button id="fullscreen-btn"><i class="fa-solid fa-expand" style="color: #ffffff;"></i>&nbsp; Fullscreen</button>
+  </div>
+
   <div class="sidebar">
-    <h1 style="font-size: 20px;"><i class="fa-solid fa-file" style="color: #ffffff;"></i>&nbsp; Files</h1>
+    <h1 style="font-size: 18px; margin-top: 5vh;"><i class="fa-solid fa-folder-open" style="color: #ffffff;"></i>&nbsp; Files</h1>
     
     <button id="back">Back</button>
     <ul id="file-list"></ul>
@@ -212,7 +226,7 @@ textarea{
         <button id="close-popup" style="display: none;">Close Popup</button>
       <button id="snap-right" style="display: none;">Snap to Right</button> <!-- Snap Right Button -->
       <button id="snap-left" style="display: none;">Snap to Left</button> <!-- Snap Left Button -->
-      <button id="full-screen" style="display: none;">Full Screen</button> <!-- Full Screen Button -->
+      
       </div>
       
     
@@ -253,7 +267,7 @@ textarea{
     <button id="uploadButton"><i class="fa-solid fa-cloud-arrow-up" style="color: #ffffff;"></i>&nbsp; Upload File</button>
     <button id="saveButton"><i class="fa-solid fa-download" style="color: #ffffff; "></i>&nbsp; Download</button>
     <!--<button id="open-popup">Directory</button>-->
-    <button id="fullscreen-btn"><i class="fa-solid fa-expand" style="color: #ffffff;"></i>&nbsp; Fullscreen</button>
+    
     
   </div>
   <script>
