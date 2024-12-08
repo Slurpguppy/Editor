@@ -8,7 +8,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/standalone.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prettier/2.8.8/parser-html.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.38.0/min/vs/loader.min.js"></script>
-  
+
+  <link rel="icon" href="code-solid.svg" type="image/x-icon">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
   <link rel="stylesheet" type="text/css" href="css/popup.css">
   <link rel="stylesheet" type="text/css" href="css/window.css">
   <link rel="stylesheet" type="text/css" href="css/on-load.css">
@@ -50,7 +54,7 @@
       border-top: none;
       border-bottom: none;
       height: 3vh;
-      width: 5vw;
+      width: 7vw;
       cursor: pointer;
       font-size: 14px;
       color: #ffffff;
@@ -114,6 +118,12 @@
       background-color: #005a9e;
     }
     #open-popup:hover {
+      background-color: #005a9e;
+    }
+    #fullscreen-btn:hover {
+      background-color: #005a9e;
+    }
+    #copy:hover {
       background-color: #005a9e;
     }
     .footer {
@@ -192,7 +202,7 @@ textarea{
 
   
   <div class="sidebar">
-    <h1 style="font-size: 20px;">Files</h1>
+    <h1 style="font-size: 20px;"><i class="fa-solid fa-file" style="color: #ffffff;"></i>&nbsp; Files</h1>
     
     <button id="back">Back</button>
     <ul id="file-list"></ul>
@@ -228,22 +238,22 @@ textarea{
 
   <div class="footer">
     <div id="buttons">
-      <button id="insert">Insert</button>
-      <button id="copy">Copy</button>
-      <button id="paste">Paste</button>
-      <button id="clear">Clear</button>
-      <button id="findButton" class="findPopup" onclick="myFunction()">Find <span class="popuptext" id="myPopup">Ctrl + F</span> </button>
-      <button id="format-button">Format</button>
-      <button id="run">Run</button>
+      <button id="insert"><i class="fa-solid fa-caret-up" style="color: #ffffff;"></i>&nbsp; Insert</button>
+      <button id="copy"><i class="fa-solid fa-copy" style="color: #ffffff;"></i>&nbsp; Copy</button>
+      <button id="paste"><i class="fa-solid fa-paste" style="color: #ffffff;"></i>&nbsp; Paste</button>
+      <button id="clear"><i class="fa-solid fa-trash" style="color: #ffffff;"></i>&nbsp; Clear</button>
+      <button id="findButton" class="findPopup" onclick="myFunction()"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>&nbsp; Find <span class="popuptext" id="myPopup">Ctrl + F</span> </button>
+      <button id="format-button"><i class="fa-solid fa-grip-lines" style="color: #ffffff;"></i>&nbsp; Format</button>
+      <button id="run"><i class="fa-solid fa-code" style="color: #ffffff;"></i>&nbsp; Run</button>
       <input id="fileInput" type="file" accept=".txt" style="display: none;" />
   </div>
 
   <div id="left-buttons">
-    <button id="open-directory">Upload folder</button>
-    <button id="uploadButton">Upload File</button>
-    <button id="saveButton">Download</button>
-    <button id="open-popup">Directory</button>
-    <button id="fullscreen-btn">Fullscreen</button>
+    <button id="open-directory"><i class="fa-solid fa-folder" style="color: #ffffff;"></i>&nbsp; Upload folder</button>
+    <button id="uploadButton"><i class="fa-solid fa-cloud-arrow-up" style="color: #ffffff;"></i>&nbsp; Upload File</button>
+    <button id="saveButton"><i class="fa-solid fa-download" style="color: #ffffff; "></i>&nbsp; Download</button>
+    <!--<button id="open-popup">Directory</button>-->
+    <button id="fullscreen-btn"><i class="fa-solid fa-expand" style="color: #ffffff;"></i>&nbsp; Fullscreen</button>
     
   </div>
   <script>
@@ -426,7 +436,7 @@ function myFunction() {
 }
 
 // reload confirmation
-window.addEventListener('beforeunload', (event) => {
+wwindow.addEventListener('beforeunload', (event) => {
     
     event.preventDefault(); 
     event.returnValue = '';
@@ -437,6 +447,7 @@ window.addEventListener('beforeunload', (event) => {
   <script src="window.js"></script>
   <script src="on-load.js"></script>
   <script src="full-screen.js"></script>
+  
   
 </body>
 </html>
